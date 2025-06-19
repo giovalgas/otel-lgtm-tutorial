@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.IntStream;
+
 @Component
 @RequiredArgsConstructor
 public class RequestUserCreationUseCase {
@@ -14,10 +16,12 @@ public class RequestUserCreationUseCase {
     private final SQSUserProducer sqsUserProducer;
 
     public void execute(@NotNull final UserCreationRequestDto requestDto) {
-        sqsUserProducer.sendMessage(
-                UserCreationMessageDto
-                        .builder()
-                        .userAmount(requestDto.getUserAmount())
-                        .build());
+        IntStream
+            .range(0, requestDto.getRepeat())
+            .forEach(i -> sqsUserProducer.sendMessage(
+                    UserCreationMessageDto
+                            .builder()
+                            .userAmount(requestDto.getUserAmount())
+                            .build()));
     }
 }

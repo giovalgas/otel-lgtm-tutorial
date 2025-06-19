@@ -16,11 +16,11 @@ public interface UserMapper {
     @Mapping(target = "lastName", source = "name.last")
     @Mapping(target = "age", source = "dob.age")
     @Mapping(target = "birthday", source = "dob.date")
-    @Mapping(target = "fullAdress", source = "location", qualifiedByName = "toFullAdress")
+    @Mapping(target = "fullAddress", source = "location", qualifiedByName = "toFullAddress")
     UserEntity toEntity(@NotNull final RandomUserMeDto.Result dto);
 
-    @Named("toFullAdress")
-    default String toFullAdress(RandomUserMeDto.Location location) {
+    @Named("toFullAddress")
+    default String toFullAddress(RandomUserMeDto.Location location) {
         return String.format("%d %s, %s, %s, %s, %s",
                 location.getStreet().getNumber(),
                 location.getStreet().getName(),
