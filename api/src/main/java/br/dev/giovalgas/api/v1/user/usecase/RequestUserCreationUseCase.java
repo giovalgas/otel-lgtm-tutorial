@@ -1,6 +1,6 @@
 package br.dev.giovalgas.api.v1.user.usecase;
 
-import br.dev.giovalgas.api.v1.user._model.dto.UserCreationMessageDto;
+import br.dev.giovalgas.messaging._model.dto.UserCreationMessageDto;
 import br.dev.giovalgas.api.v1.user._model.dto.UserCreationRequestDto;
 import br.dev.giovalgas.api.v1.user.producer.SQSUserProducer;
 import lombok.RequiredArgsConstructor;

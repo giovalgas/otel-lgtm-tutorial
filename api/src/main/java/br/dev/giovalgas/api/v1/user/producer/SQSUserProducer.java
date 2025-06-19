@@ -1,6 +1,6 @@
 package br.dev.giovalgas.api.v1.user.producer;
 
-import br.dev.giovalgas.api.v1.user._model.dto.UserCreationMessageDto;
+import br.dev.giovalgas.messaging._model.dto.UserCreationMessageDto;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;

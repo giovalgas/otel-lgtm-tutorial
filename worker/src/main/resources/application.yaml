@@ -14,9 +14,9 @@ spring:
         format_sql: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/"
-    username: "${POSTGRES_USER:organovate}"
-    password: "${POSTGRES_PASSWORD:organovate}"
+    url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/otel-lgtm-tutorial"
+    username: "${POSTGRES_USER:otel-lgtm-tutorial}"
+    password: "${POSTGRES_PASSWORD:otel-lgtm-tutorial}"
   application:
     name: otel-lgtm-tutorial-worker
 server:

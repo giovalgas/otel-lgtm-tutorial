@@ -2,17 +2,20 @@ package br.dev.giovalgas.worker.v1.user._model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RandomUserMeDto {
     @NotNull
     private Result[] results;
 
     @Data
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Result {
         @NotNull
@@ -24,6 +27,7 @@ public class RandomUserMeDto {
     }
 
     @Data
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Name {
         @NotNull
@@ -33,6 +37,7 @@ public class RandomUserMeDto {
     }
 
     @Data
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Dob {
         @NotNull
@@ -42,6 +47,7 @@ public class RandomUserMeDto {
     }
 
     @Data
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Location {
         @NotNull
@@ -57,6 +63,7 @@ public class RandomUserMeDto {
    }
 
     @Data
+    @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Street {
         @NotNull
