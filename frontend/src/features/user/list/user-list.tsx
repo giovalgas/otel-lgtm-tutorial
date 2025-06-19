@@ -1,131 +1,21 @@
 import {columns, type User} from "@/features/user/list/columns.tsx";
 import {DataTable} from "@/components/data-table.tsx";
+import { usePageableData } from "@/hooks/use-pageable-data";
+import { defaultPageableQueryFn } from "@/lib/react-query";
+import type { QueryFunctionContext } from "@tanstack/react-query";
 
-async function getData(): Promise<User[]> {
-    return [
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-        {
-            id: 1,
-            firstName: 'Giovani',
-            lastName: 'Valgas',
-            fullAdress: '88085-260, Fernando Ferreira de Mello, 376',
-            birthday: new Date(2024, 2,  27),
-        },
-    ]
-}
-
-async function UsersList() {
-    const data = await getData()
+function UsersList() {
+    const { table } = usePageableData<User>({
+        queryKey: "users",
+        columns,
+        queryFn: (context: QueryFunctionContext) => defaultPageableQueryFn({ queryKey: context.queryKey, endpoint: "/api/v1/users" }),
+    });
 
     return (
         <div className="container mx-auto">
-            <DataTable columns={columns} data={data} />
+            <DataTable table={table} columns={columns} />
         </div>
-    )
+    );
 }
 
 export { UsersList }

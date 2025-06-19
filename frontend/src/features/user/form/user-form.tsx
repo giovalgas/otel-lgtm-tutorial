@@ -2,28 +2,19 @@
 
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
-import {z} from "zod"
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import {NumberInput} from "@/components/number-input.tsx";
+import { userSchema, type UserRequest } from "@/types/user"
 
-const formSchema = z.object({
-    userAmount: z.number().min(1).max(5000),
-    repeat: z.number().min(1).max(5000),
-})
-
-export function ProfileForm() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+export function ProfileForm({ onSubmit }: { onSubmit: (values: UserRequest) => void }) {
+    const form = useForm<UserRequest>({
+        resolver: zodResolver(userSchema),
         defaultValues: {
             userAmount: 1,
             repeat: 1,
         },
     })
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-    }
 
     return (
         <Form {...form}>
