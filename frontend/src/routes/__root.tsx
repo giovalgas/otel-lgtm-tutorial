@@ -1,16 +1,31 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { AppSidebar } from "@/components/app-sidebar"
+import { SiteHeader } from "@/components/site-header"
+import {
+    SidebarInset,
+    SidebarProvider,
+} from "@/components/ui/sidebar"
+
+
+export const iframeHeight = "800px"
+export const description = "A sidebar with a header and a search form."
 
 export const Route = createRootRoute({
     component: () => (
         <>
-            <div className="p-2 flex gap-2">
-                <Link to="/" className="[&.active]:font-bold">
-                    Home
-                </Link>{' '}
-                <Link to="/about" className="[&.active]:font-bold">
-                    About
-                </Link>
+            <div className="[--header-height:calc(--spacing(14))]">
+                <SidebarProvider className="flex flex-col">
+                    <SiteHeader />
+                    <div className="flex flex-1">
+                        <AppSidebar />
+                        <SidebarInset>
+                            <div className="flex flex-1 flex-col gap-4 p-4">
+                                <Outlet />
+                            </div>
+                        </SidebarInset>
+                    </div>
+                </SidebarProvider>
             </div>
             <hr />
             <Outlet />
