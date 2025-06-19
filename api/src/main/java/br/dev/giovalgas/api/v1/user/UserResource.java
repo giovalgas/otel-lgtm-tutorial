@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserResource {
+public class UserResource implements UserResourceDoc {
     @NotNull
     private final FindAllUsersUseCase findAllUsersUseCase;
     @NotNull
