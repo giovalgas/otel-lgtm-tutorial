@@ -5,7 +5,7 @@ import { defaultPageableQueryFn } from "@/lib/react-query";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 
 function UsersList() {
-    const { table } = usePageableData<User>({
+    const { table, isFetching } = usePageableData<User>({
         queryKey: "users",
         columns,
         queryFn: (context: QueryFunctionContext) => defaultPageableQueryFn({ queryKey: context.queryKey, endpoint: "/api/v1/users" }),
@@ -13,7 +13,7 @@ function UsersList() {
 
     return (
         <div className="container mx-auto">
-            <DataTable table={table} columns={columns} />
+            <DataTable table={table} columns={columns} isFetching={isFetching} />
         </div>
     );
 }

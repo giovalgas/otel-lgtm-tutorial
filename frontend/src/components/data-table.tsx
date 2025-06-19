@@ -15,15 +15,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     table: TableType<TData>
+    isFetching?: boolean
 }
 
 export function DataTable<TData, TValue>({
     table,
     columns,
+    isFetching,
 }: DataTableProps<TData, TValue>) {
     return (
         <div>
@@ -48,7 +51,17 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isFetching ? (
+                            Array.from({ length: table.getState().pagination.pageSize }).map((_, i) => (
+                                <TableRow key={`skeleton-row-${i}`}>
+                                    {columns.map((column, j) => (
+                                        <TableCell key={`skeleton-cell-${i}-${j}`}>
+                                            <Skeleton className="h-4 w-full" />
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
@@ -75,7 +88,7 @@ export function DataTable<TData, TValue>({
                         variant="outline"
                         size="sm"
                         onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
+                        disabled={!table.getCanPreviousPage() || isFetching}
                     >
                         Previous
                     </Button>
@@ -83,7 +96,7 @@ export function DataTable<TData, TValue>({
                         variant="outline"
                         size="sm"
                         onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
+                        disabled={!table.getCanNextPage() || isFetching}
                     >
                         Next
                     </Button>
