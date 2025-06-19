@@ -3,6 +3,6 @@ create table if not exists public.user (
     first_name text,
     last_name text,
     age smallint,
-    full_adress text,
+    full_address text,
     birthday date
 )

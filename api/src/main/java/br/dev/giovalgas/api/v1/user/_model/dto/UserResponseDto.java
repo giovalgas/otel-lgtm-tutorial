@@ -27,7 +27,7 @@ public class UserResponseDto {
 
     @NotNull
     @Schema(description = "Endereço completo do usuário", example = "Rua das Flores, 123, São Paulo - SP")
-    private String fullAdress;
+    private String fullAddress;
 
     @NotNull
     @Schema(description = "Data de nascimento do usuário", example = "1993-05-15")

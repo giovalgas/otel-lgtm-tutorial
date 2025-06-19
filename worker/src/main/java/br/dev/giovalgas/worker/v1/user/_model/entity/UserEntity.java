@@ -24,8 +24,8 @@ public class UserEntity {
     private String lastName;
     @Column(name = "age")
     private Short age;
-    @Column(name = "full_adress")
-    private String fullAdress;
+    @Column(name = "full_address")
+    private String fullAddress;
     @Column(name = "birthday")
     private LocalDate birthday;
 }
