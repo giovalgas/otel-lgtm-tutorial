@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 public class UserResource implements UserResourceDoc {
     @NotNull
     private final FindAllUsersUseCase findAllUsersUseCase;
