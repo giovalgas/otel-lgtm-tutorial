@@ -1,9 +1,10 @@
 import {createFileRoute} from '@tanstack/react-router'
+import {UsersList} from "@/features/user/list/user-list.tsx";
 
 export const Route = createFileRoute('/users/')({
-    component: About,
+    component: UsersPage,
 })
 
-function About() {
-    return <div className="p-2">Hello from user index!</div>
+function UsersPage() {
+    return <UsersList />
 }

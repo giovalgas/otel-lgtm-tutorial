@@ -7,10 +7,6 @@ import {
     SidebarProvider,
 } from "@/components/ui/sidebar"
 
-
-export const iframeHeight = "800px"
-export const description = "A sidebar with a header and a search form."
-
 export const Route = createRootRoute({
     component: () => (
         <>
@@ -28,7 +24,6 @@ export const Route = createRootRoute({
                 </SidebarProvider>
             </div>
             <hr />
-            <Outlet />
             <TanStackRouterDevtools />
         </>
     ),
