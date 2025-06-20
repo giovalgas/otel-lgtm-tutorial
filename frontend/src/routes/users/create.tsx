@@ -10,15 +10,15 @@ export const Route = createFileRoute('/users/create')({
 })
 
 function CreateUserPage() {
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
       mutationFn: (values: UserRequest) => api.post("/api/v1/users", values),
       onSuccess: () => {
-        toast.success("Users requested successfully, wait for the process to finish...");
+        toast.success("Users requested successfully, wait for the process to finish...");     
       },
       onError: () => toast.error("Error requesting users, please try again later."),
     });
   
     const onSubmit = async (values: UserRequest) => mutate(values);
 
-    return <ProfileForm onSubmit={onSubmit}/>
+    return <ProfileForm onSubmit={onSubmit} isPending={isPending}/>
 }
