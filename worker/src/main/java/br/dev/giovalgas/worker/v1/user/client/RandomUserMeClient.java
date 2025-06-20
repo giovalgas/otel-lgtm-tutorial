@@ -3,6 +3,7 @@ package br.dev.giovalgas.worker.v1.user.client;
 import br.dev.giovalgas.worker.v1.user._model.dto.RandomUserMeDto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -11,5 +12,5 @@ public interface RandomUserMeClient {
 
     @NotNull
     @GetMapping("/api/")
-    RandomUserMeDto getRandomUsers(@RequestParam(name = "results", defaultValue = "1") int results);
+    ResponseEntity<RandomUserMeDto> getRandomUsers(@RequestParam(name = "results", defaultValue = "1") int results);
 }
