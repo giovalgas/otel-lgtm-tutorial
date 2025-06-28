@@ -11,6 +11,7 @@ type Props<T> = {
   columns: ColumnDef<T>[];
   queryFn: QueryFunction<PaginatedData<T>>;
   initialPageSize?: number;
+  totalElements?: number
 };
 
 export function usePageableData<T>({
@@ -47,5 +48,5 @@ export function usePageableData<T>({
     rowCount: data?.page.totalElements,
   });
 
-  return { table, isFetching, error };
+  return { table, isFetching, error, totalElements: data?.page?.totalElements };
 } 

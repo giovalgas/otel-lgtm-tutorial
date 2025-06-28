@@ -20,13 +20,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     table: TableType<TData>
-    isFetching?: boolean
+    isFetching?: boolean,
+    total?: number,
 }
 
 export function DataTable<TData, TValue>({
     table,
     columns,
     isFetching,
+    total = 0,
 }: DataTableProps<TData, TValue>) {
     return (
         <div>
@@ -83,23 +85,28 @@ export function DataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
-                <div className="flex items-center justify-end space-x-2 p-4">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage() || isFetching}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage() || isFetching}
-                    >
-                        Next
-                    </Button>
+                <div className="flex items-center justify-between space-x-2 p-4">
+                    <span>
+                        Total: {total}
+                    </span>
+                    <div className="flex space-x-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage() || isFetching}
+                        >
+                            Previous
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage() || isFetching}
+                        >
+                            Next
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
