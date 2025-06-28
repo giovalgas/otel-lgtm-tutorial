@@ -17,6 +17,7 @@ public class SQSUserListener {
 
     @SqsListener("${spring.cloud.aws.sqs.queue-name}")
     public void listen(@NotNull final UserCreationMessageDto payload) {
+        log.info("Recebeu mensagem do SQS");
         createUserUseCase.execute(payload);
     }
 }
