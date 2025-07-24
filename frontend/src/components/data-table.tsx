@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
                         {isFetching ? (
                             Array.from({ length: table.getState().pagination.pageSize }).map((_, i) => (
                                 <TableRow key={`skeleton-row-${i}`}>
-                                    {columns.map((column, j) => (
+                                    {columns.map((_column, j) => (
                                         <TableCell key={`skeleton-cell-${i}-${j}`}>
                                             <Skeleton className="h-4 w-full" />
                                         </TableCell>

@@ -1,0 +1,43 @@
+version: "3.8"
+
+x-common-envs: &common-envs
+  POSTGRES_USER: otel-lgtm-tutorial
+  POSTGRES_PASSWORD: otel-lgtm-tutorial
+  POSTGRES_DB: otel-lgtm-tutorial
+  QUEUE_NAME: ${SQS_NAME}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+
+services:
+  postgresql:
+    image: postgres:17-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      <<: *common-envs
+
+  api:
+    image: "ghcr.io/giovalgas/otel-lgtm-tutorial-api:latest"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *common-envs
+
+  worker:
+    image: "ghcr.io/giovalgas/otel-lgtm-tutorial-worker:latest"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *common-envs
+
+  frontend:
+    image: "ghcr.io/giovalgas/otel-lgtm-tutorial-frontend:latest"
+    ports:
+      - "80:80"
