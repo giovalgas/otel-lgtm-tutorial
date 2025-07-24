@@ -1,33 +1,36 @@
-[
-  {
-    "title": "Stack do App",
-    "description": "Aqui temos a stack completa do App criado nos tutoriais :)",
-    "platform": "linux",
-    "type": "swarm",
-    "categories": ["tutorial"],
-    "env": [
-      {
-        "name": "SQS_NAME",
-        "label": "SQS",
-        "description": "Nome da fila do SQS",
-        "default": "minha-fila-muito-louca"
-      },
-      {
-        "name": "AWS_ACCESS_KEY_ID",
-        "label": "Access Key ID",
-        "description": "Access Key ID do AWS",
-        "default": ""
-      },
-      {
-        "name": "AWS_SECRET_ACCESS_KEY",
-        "label": "Secret Key ID",
-        "description": "Secret Key ID do AWS",
-        "default": ""
+{
+  "version": "3",
+  "templates": [
+    {
+      "title": "Stack do App",
+      "description": "Aqui temos a stack completa do App criado nos tutoriais :)",
+      "platform": "linux",
+      "type": "swarm",
+      "categories": ["tutorial"],
+      "env": [
+        {
+          "name": "SQS_NAME",
+          "label": "SQS",
+          "description": "Nome da fila do SQS",
+          "default": "minha-fila-muito-louca"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "label": "Access Key ID",
+          "description": "Access Key ID do AWS",
+          "default": ""
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "label": "Secret Key ID",
+          "description": "Secret Key ID do AWS",
+          "default": ""
+        }
+      ],
+      "repository": {
+        "url": "https://github.com/giovalgas/trial-prologapp",
+        "stackfile": "infra/swarm/app/app.local.yaml"
       }
-    ],
-    "repository": {
-      "url": "https://github.com/giovalgas/trial-prologapp",
-      "stackfile": "infra/swarm/app/app.local.yaml"
     }
-  }
-]
+  ]
+}

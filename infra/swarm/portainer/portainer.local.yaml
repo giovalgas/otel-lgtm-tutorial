@@ -15,14 +15,13 @@ services:
 
   portainer:
     image: portainer/portainer-ce:lts
-    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    command: -H tcp://tasks.agent:9001 --tlsskipverify --templates=https://raw.githubusercontent.com/giovalgas/otel-lgtm-tutorial/refs/heads/main/infra/swarm/portainer/templates.json
     ports:
       - "9443:9443"
       - "9000:9000"
       - "8000:8000"
     volumes:
       - portainer_data:/data
-      - templates.json:/templates.json
     networks:
       - agent_network
     deploy:
