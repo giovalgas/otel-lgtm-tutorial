@@ -4,6 +4,7 @@ x-common-envs: &common-envs
   POSTGRES_USER: otel-lgtm-tutorial
   POSTGRES_PASSWORD: otel-lgtm-tutorial
   POSTGRES_DB: otel-lgtm-tutorial
+  DB_HOST: postgresql
   QUEUE_NAME: ${SQS_NAME}
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
