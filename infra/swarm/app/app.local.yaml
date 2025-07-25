@@ -11,11 +11,6 @@ x-common-envs: &common-envs
 services:
   postgresql:
     image: postgres:17-alpine
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     environment:
       <<: *common-envs
 
@@ -24,16 +19,14 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     environment:
       <<: *common-envs
 
   worker:
     image: "ghcr.io/giovalgas/otel-lgtm-tutorial-worker:latest"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     environment:
       <<: *common-envs
 
