@@ -7,7 +7,7 @@ networks:
     name: dockerswarm_monitoring
     external: true
 
-services
+services:
   otel-collector:
     image: otel/opentelemetry-collector-contrib
     networks:
