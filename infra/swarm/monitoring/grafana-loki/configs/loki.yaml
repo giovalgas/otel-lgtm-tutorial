@@ -1,0 +1,163 @@
+# Loki defaults to running in multi-tenant mode. Multi-tenant mode is set in the configuration with auth_enabled: true.
+#
+# When configured with auth_enabled: false, Loki uses a single tenant.
+# The X-Scope-OrgID header is not required in Loki API requests.
+# The single tenant ID will be the string "fake".
+auth_enabled: true
+
+server:
+  log_level: info
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+  http_server_read_timeout: 310s
+  http_server_write_timeout: 310s
+  grpc_server_max_recv_msg_size: 104857600
+  grpc_server_max_send_msg_size: 104857600
+
+common:
+  path_prefix: /loki
+  instance_addr: loki-{{.Task.Slot}}
+  replication_factor: 3
+  ring:
+    kvstore:
+      prefix: loki/collectors/
+      store: consul
+      consul:
+        # !!! IMPORTANT !!!
+        # ! Update this to the IP address of your Consul server
+        host: host.docker.internal:8500
+        # acl_token: secret
+  storage:
+    s3:
+      # !!! IMPORTANT !!!
+      # ! Update this to the IP address of your Minio server or S3 endpoint
+      endpoint: http://minio:9000
+      region: us-east-1
+      insecure: true
+      bucketnames: loki
+      access_key_id: minioadmin
+      secret_access_key: minioadmin
+      sse_encryption: false
+      s3forcepathstyle: true
+
+# You can also change the to a different alertmanager instance here.
+# Its default value is http://alertmanager:9093 which is the default in cluster deployment.
+# ruler:
+#   enable_api: true
+#   enable_sharding: true
+#   wal:
+#     dir: /loki/ruler-wal
+
+#   # Alertmanager
+#   alertmanager_url: dns+http://tasks.alertmanager:9093
+#   enable_alertmanager_discovery: true
+#   enable_alertmanager_v2: true
+
+#   # Prometheus Remote Write
+#   remote_write:
+#     enabled: true
+#     clients:
+#       local:
+#          url: http://prometheus:9090/api/v1/write
+#          queue_config:
+#            # send immediately as soon as a sample is generated
+#            capacity: 1
+#            batch_send_deadline: 0s
+
+schema_config:
+  configs:
+    - from: 2020-08-01
+      store: boltdb-shipper
+      object_store: s3
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+    - from: 2023-07-11
+      store: tsdb
+      object_store: s3
+      schema: v12
+      index:
+        prefix: index_
+        period: 24h
+
+ingester:
+  lifecycler:
+    join_after: 10s
+    observe_period: 5s
+    final_sleep: 0s
+  chunk_idle_period: 1m
+  wal:
+    enabled: true
+    dir: /loki/ingester-wal
+  max_chunk_age: 1m
+  chunk_retain_period: 30s
+  chunk_encoding: snappy
+  chunk_target_size: 1.572864e+06
+  chunk_block_size: 262144
+  flush_op_timeout: 10s
+
+querier:
+  # max_concurrent: 10 # default
+  query_timeout: 300s
+  query_ingesters_within: 2h
+  engine:
+    timeout: 300s
+
+ingester_client:
+  grpc_client_config:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+
+chunk_store_config:
+  max_look_back_period: 336h
+
+table_manager:
+  retention_deletes_enabled: true
+  retention_period: 336h
+
+query_range:
+  # make queries more cache-able by aligning them with their step intervals
+  align_queries_with_step: true
+  max_retries: 5
+  parallelise_shardable_queries: true
+  cache_results: true
+
+frontend:
+  log_queries_longer_than: 5s
+  compress_responses: true
+  max_outstanding_per_tenant: 2048
+
+query_scheduler:
+  max_outstanding_requests_per_tenant: 1024
+
+compactor:
+  working_directory: /loki/compactor
+
+limits_config:
+  max_cache_freshness_per_query: '10m'
+  enforce_metric_name: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 30m
+  ingestion_rate_mb: 10
+  ingestion_burst_size_mb: 20
+  # parallelize queries in 15min intervals
+  split_queries_by_interval: 15m
+  volume_enabled: true
+
+  # See https://grafana.com/docs/loki/latest/operations/storage/retention/
+  # The minimum retention period is 24h.
+  # retention_period: 744h
+
+# By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
+# analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
+#
+# Statistics help us better understand how Loki is used, and they show us performance
+# levels for most users. This helps us prioritize features and documentation.
+# For more information on what's sent, look at
+# https://github.com/grafana/loki/blob/main/pkg/usagestats/stats.go
+# Refer to the buildReport method to see what goes into a report.
+#
+# If you would like to disable reporting, uncomment the following lines:
+analytics:
+  reporting_enabled: false
