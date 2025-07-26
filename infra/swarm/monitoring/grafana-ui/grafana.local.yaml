@@ -29,10 +29,6 @@ volumes:
   grafana:
     external: true
 
-configs:
-  grafana.ini:
-    file: configs/grafana.ini
-
 services:
   grafana:
     image: grafana/grafana:12.1.0
