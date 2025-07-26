@@ -1,5 +1,5 @@
 x-deploy-policy: &x-deploy-policy
-  replicas: ${GRAFANA_REPLICAS:-1}
+  replicas: 1
   update_config:
     parallelism: 1
     delay: 30s
@@ -35,9 +35,8 @@ configs:
 
 services:
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    image: grafana/grafana:12.1.0
     hostname: grafana-{{.Task.Slot}}-{{.Task.ID}}
-    env_file: .env
     environment:
       # General
       - GF_LOG_LEVEL=info
@@ -50,7 +49,7 @@ services:
     networks:
       - dockerswarm_monitoring
     ports:
-      - ${GRAFANA_PORT:-3000}:3000
+      - 3000:3000
     volumes:
       - grafana:/var/lib/grafana
     configs:
