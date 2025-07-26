@@ -2,8 +2,6 @@ x-deploy: &x-deploy-default
   replicas: 1
   placement:
     max_replicas_per_node: 1
-    constraints:
-      - node.labels.grafana-loki == true
     preferences:
       - spread: node.labels.grafana-loki
   update_config:
@@ -41,7 +39,7 @@ configs:
 services:
   loki:
     hostname: loki-{{.Task.Slot}}
-    image: grafana/loki:${GRAFANA_LOKI_VERSION:-latest}
+    image: grafana/loki:latest
     command:
       - -config.expand-env=true
       - -config.file=/etc/loki/loki.yml
