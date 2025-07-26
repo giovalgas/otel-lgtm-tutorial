@@ -38,7 +38,6 @@ services:
     image: grafana/grafana:12.1.0
     hostname: grafana-{{.Task.Slot}}-{{.Task.ID}}
     environment:
-      # General
       - GF_LOG_LEVEL=info
       - GF_NEWS_ENABLED=false
       - GC_CHECK_FOR_UPDATES=false
