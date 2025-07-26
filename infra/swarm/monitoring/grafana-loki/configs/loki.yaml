@@ -3,7 +3,7 @@
 # When configured with auth_enabled: false, Loki uses a single tenant.
 # The X-Scope-OrgID header is not required in Loki API requests.
 # The single tenant ID will be the string "fake".
-auth_enabled: true
+auth_enabled: false
 
 server:
   log_level: info
