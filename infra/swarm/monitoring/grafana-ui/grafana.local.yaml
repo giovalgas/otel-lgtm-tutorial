@@ -45,6 +45,18 @@ services:
       - GF_SUPPORT_BUNDLES_ENABLED=false
       - GF_UNIFIED_ALERTING_HA_PEERS=tasks.grafana:9094
       - GF_METRICS_ENABLED=true
+      - GR_SERVER_PROTOCOL=http
+      - GF_SERVER_DOMAIN=localhost
+      - GR_SERVER_HTTP_PORT=3000
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-github-datasource
+      - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_HOME=/usr/share/grafana
+      - GF_PATHS_LOGS=/var/log/grafana
+      - GF_PATHS_PLUGINS=/var/lib/grafana/plugins
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
     networks:
       - dockerswarm_monitoring
     ports:
