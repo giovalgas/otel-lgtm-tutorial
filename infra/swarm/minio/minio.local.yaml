@@ -1,35 +1,24 @@
+version: "3.9"
+
 services:
   minio:
-    command: server --console-address ":9001" /data1
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
     volumes:
-      - minio-data-1:/data1
-    networks:
-      - dockerswarm_monitoring
+      - minio-data:/data
     deploy:
       replicas: 1
       placement:
-        max_replicas_per_node: 1
         constraints:
-          - node.labels.minio == true
-        preferences:
-          - spread: "node.labels.minio"
-
-  ingress:
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - node.labels.minio == true
-        preferences:
-          - spread: "node.labels.minio"
+          - node.role == manager
+    user: "${UID}:${GID}"
 
 volumes:
-  minio-data-1:
-    name: minio-data-1
-    external: true
+  minio-data:
 
-networks:
-  dockerswarm_monitoring:
-    name: dockerswarm_monitoring
-    external: true
