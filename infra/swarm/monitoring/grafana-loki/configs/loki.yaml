@@ -16,17 +16,11 @@ server:
 
 common:
   path_prefix: /loki
-  instance_addr: loki-{{.Task.Slot}}
+  instance_addr: localhost
   replication_factor: 3
   ring:
     kvstore:
-      prefix: loki/collectors/
-      store: consul
-      consul:
-        # !!! IMPORTANT !!!
-        # ! Update this to the IP address of your Consul server
-        host: host.docker.internal:8500
-        # acl_token: secret
+      store: inmemory
   storage:
     s3:
       # !!! IMPORTANT !!!
@@ -37,7 +31,6 @@ common:
       bucketnames: loki
       access_key_id: minioadmin
       secret_access_key: minioadmin
-      sse_encryption: false
       s3forcepathstyle: true
 
 # You can also change the to a different alertmanager instance here.
@@ -66,20 +59,13 @@ common:
 
 schema_config:
   configs:
-    - from: 2020-08-01
-      store: boltdb-shipper
-      object_store: s3
-      schema: v11
-      index:
-        prefix: index_
-        period: 24h
-    - from: 2023-07-11
+    - from: 2024-01-01
       store: tsdb
       object_store: s3
-      schema: v12
+      schema: v13
       index:
-        prefix: index_
-        period: 24h
+          prefix: index_
+          period: 24h
 
 ingester:
   lifecycler:
@@ -99,18 +85,12 @@ ingester:
 
 querier:
   # max_concurrent: 10 # default
-  query_timeout: 300s
   query_ingesters_within: 2h
-  engine:
-    timeout: 300s
 
 ingester_client:
   grpc_client_config:
     max_recv_msg_size: 104857600
     max_send_msg_size: 104857600
-
-chunk_store_config:
-  max_look_back_period: 336h
 
 table_manager:
   retention_deletes_enabled: true
@@ -136,7 +116,6 @@ compactor:
 
 limits_config:
   max_cache_freshness_per_query: '10m'
-  enforce_metric_name: false
   reject_old_samples: true
   reject_old_samples_max_age: 30m
   ingestion_rate_mb: 10
