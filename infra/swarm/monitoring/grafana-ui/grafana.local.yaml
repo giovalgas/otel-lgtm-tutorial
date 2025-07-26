@@ -29,6 +29,10 @@ volumes:
   grafana:
     external: true
 
+configs:
+  grafana.ini:
+    external: true
+
 services:
   grafana:
     image: grafana/grafana:12.1.0
@@ -44,7 +48,7 @@ services:
     networks:
       - dockerswarm_monitoring
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - grafana:/var/lib/grafana
     configs:
