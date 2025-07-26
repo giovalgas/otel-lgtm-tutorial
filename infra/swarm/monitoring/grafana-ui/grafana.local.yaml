@@ -1,0 +1,60 @@
+x-deploy-policy: &x-deploy-policy
+  replicas: ${GRAFANA_REPLICAS:-1}
+  update_config:
+    parallelism: 1
+    delay: 30s
+    order: start-first
+    failure_action: rollback
+  rollback_config:
+    parallelism: 1
+    delay: 30s
+  restart_policy:
+    condition: on-failure
+    delay: 30s
+    max_attempts: 3
+    window: 120s
+
+x-default-logging: &x-default-logging
+  options:
+    max-size: "12m"
+    max-file: "5"
+  driver: json-file
+
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
+volumes:
+  grafana:
+    external: true
+
+configs:
+  grafana.ini:
+    file: configs/grafana.ini
+
+services:
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    hostname: grafana-{{.Task.Slot}}-{{.Task.ID}}
+    env_file: .env
+    environment:
+      # General
+      - GF_LOG_LEVEL=info
+      - GF_NEWS_ENABLED=false
+      - GC_CHECK_FOR_UPDATES=false
+      - GF_REPORTING_ENABLED=false
+      - GF_SUPPORT_BUNDLES_ENABLED=false
+      - GF_UNIFIED_ALERTING_HA_PEERS=tasks.grafana:9094
+      - GF_METRICS_ENABLED=true
+    networks:
+      - dockerswarm_monitoring
+    ports:
+      - ${GRAFANA_PORT:-3000}:3000
+    volumes:
+      - grafana:/var/lib/grafana
+    configs:
+      - source: grafana.ini
+        target: /etc/grafana/grafana.ini
+    deploy: *x-deploy-policy
+    logging: *x-default-logging
