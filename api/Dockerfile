@@ -26,7 +26,7 @@ ENTRYPOINT [\
         "-Dotel.exporter.otlp.endpoint=http://otel-collector:4317",\
         "-Dotel.exporter.otlp.protocol=grpc",\
         "-Dotel.logs.exporter=otlp",\
-        "-Dotel.metrics.exporter=none",\
-        "-Dotel.traces.exporter=none",\
+        "-Dotel.metrics.exporter=otlp",\
+        "-Dotel.traces.exporter=otlp",\
         "-jar",\
         "/app/app.jar"]

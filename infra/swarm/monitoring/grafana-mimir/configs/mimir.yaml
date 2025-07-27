@@ -1,5 +1,7 @@
 target: all,ruler,overrides-exporter
 
+auth_enabled: false
+
 server:
   http_listen_port: 3100
   grpc_listen_port: 9095
@@ -32,11 +34,6 @@ compactor:
     instance_addr: &instance_addr mimir-{{.Task.Slot}}
     kvstore: &default-ring-kvstore
       store: inmemory
-
-  sharding_ring:
-    instance_addr: *instance_addr
-    kvstore: *default-ring-kvstore
-    replication_factor: 3
 
 distributor:
   pool:
