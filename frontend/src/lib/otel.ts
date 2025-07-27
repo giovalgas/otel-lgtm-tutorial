@@ -28,22 +28,22 @@ headers: {},
 const spanProcessor = new SimpleSpanProcessor(traceExporter);
 
 const tracerProvider = new WebTracerProvider({
-resource: resource,
-spanProcessors: [spanProcessor]
+    resource: resource,
+    spanProcessors: [spanProcessor]
 });
 
 const metricExporter = new OTLPMetricExporter({
-url: `${environment.otelCollector}/v1/metrics`,
-headers: {},
+    url: `${environment.otelCollector}/v1/metrics`,
+    headers: {},
 });
 const metricReader = new PeriodicExportingMetricReader({
-exporter: metricExporter,
-exportIntervalMillis: 10000,
+    exporter: metricExporter,
+    exportIntervalMillis: 10000,
 });
 
 const meterProvider = new MeterProvider({
-resource: resource,
-readers: [metricReader],
+    resource: resource,
+    readers: [metricReader],
 });
 
 metrics.setGlobalMeterProvider(meterProvider);
