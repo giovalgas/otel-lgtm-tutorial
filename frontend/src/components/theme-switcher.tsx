@@ -4,7 +4,7 @@ import { metrics } from "@opentelemetry/api";
 
 type Theme = "light" | "dark" | "system";
 
-const meter = metrics.getMeter("theme-usage");
+const meter = metrics.getMeter("theme_usage");
 const themeCounter = meter.createUpDownCounter("theme.usage", {
     description: "Tracks the number of users using each theme",
 });

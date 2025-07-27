@@ -17,12 +17,12 @@ import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http/bu
 import { environment } from "./environment";
 
 const resource = resourceFromAttributes({
-[ATTR_SERVICE_NAME]: "frontend",
+    [ATTR_SERVICE_NAME]: "frontend",
 });
 
 const traceExporter = new OTLPTraceExporter({
-url: `${environment.otelCollector}/v1/traces`,
-headers: {},
+    url: `${environment.otelCollector}/v1/traces`,
+    headers: {},
 });
 
 const spanProcessor = new SimpleSpanProcessor(traceExporter);
