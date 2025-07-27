@@ -18,6 +18,7 @@ public class SQSUserProducer {
     private String queueName;
 
     public void sendMessage(@NotNull final UserCreationMessageDto message) {
+        log.info("Enviando mensagem fila no SQS: {}, com quantidade: {}", queueName, message.userAmount());
         sqsTemplate.sendAsync(to -> {
             to.queue(queueName);
             to.payload(message);
