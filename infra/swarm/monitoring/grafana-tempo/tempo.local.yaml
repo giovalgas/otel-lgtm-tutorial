@@ -32,6 +32,10 @@ networks:
 volumes:
   tempo:
 
+configs:
+  tempo.yml:
+    external: true
+
 services:
   tempo:
     image: grafana/tempo:latest
