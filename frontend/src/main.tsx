@@ -1,3 +1,4 @@
+import './lib/otel'
 import './index.css'
 
 import { StrictMode } from 'react'

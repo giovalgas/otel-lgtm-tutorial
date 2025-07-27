@@ -1,7 +1,13 @@
 import { ChevronDown, Laptop, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { metrics } from "@opentelemetry/api";
 
 type Theme = "light" | "dark" | "system";
+
+const meter = metrics.getMeter("theme-usage");
+const themeCounter = meter.createUpDownCounter("theme.usage", {
+    description: "Tracks the number of users using each theme",
+});
 
 const useTheme = () => {
     const [theme, setTheme] = useState<Theme>(() => {
@@ -26,10 +32,18 @@ const useTheme = () => {
                 .matches
                 ? "dark"
                 : "light";
-            root.classList.add(systemTheme);
+            root.classList.add(systemTheme);            
         } else {
             root.classList.add(theme);
         }
+    }, [theme]);
+    
+    useEffect(() => {
+        themeCounter.add(1, { theme });
+        
+        return () => {
+            themeCounter.add(-1, { theme });
+        };
     }, [theme]);
 
     const isLight =
