@@ -1,0 +1,62 @@
+x-deploy: &x-deploy-default
+  replicas: 1
+  placement:
+    max_replicas_per_node: 1
+    preferences:
+      - spread: node.labels.grafana-tempo
+  update_config:
+    parallelism: 1
+    delay: 30s
+    order: stop-first
+    failure_action: rollback
+  rollback_config:
+    parallelism: 1
+    delay: 30s
+  restart_policy:
+    condition: on-failure
+    delay: 30s
+    max_attempts: 3
+    window: 120s
+
+x-logging: &x-logging-default
+  options:
+    max-size: "12m"
+    max-file: "5"
+  driver: json-file
+
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
+volumes:
+  tempo:
+
+configs:
+  tempo.yml:
+    file: configs/tempo.yml
+
+services:
+  tempo:
+    image: grafana/tempo:latest
+    command:
+      - -target=scalable-single-binary
+      - -config.file=/etc/tempo.yml
+    networks:
+      - dockerswarm_monitoring
+    ports:
+      - "3300:3100" # tempo http_listen_port
+      - "9395:9095" # tempo grpc_listen_port
+      - "14268:14268" # jaeger ingest
+      - "4317:4317" # otlp grpc
+      - "4318:4318" # otlp http
+      - "9411:9411" # zipkin
+    configs:
+      - source: tempo.yml
+        target: /etc/tempo.yml
+    volumes:
+      - tempo:/tempo-data
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    deploy: *x-deploy-default
+    logging: *x-logging-default

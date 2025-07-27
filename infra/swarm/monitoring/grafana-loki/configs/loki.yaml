@@ -17,7 +17,7 @@ server:
 common:
   path_prefix: /loki
   instance_addr: localhost
-  replication_factor: 3
+  replication_factor: 1
   ring:
     kvstore:
       store: inmemory
@@ -25,7 +25,7 @@ common:
     s3:
       # !!! IMPORTANT !!!
       # ! Update this to the IP address of your Minio server or S3 endpoint
-      endpoint: http://minio:9001
+      endpoint: http://minio:9000
       region: us-east-1
       insecure: true
       bucketnames: loki

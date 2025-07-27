@@ -1,0 +1,85 @@
+multitenancy_enabled: true
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+  log_level: info
+
+storage:
+  trace:
+    backend: s3
+    s3:
+      bucket: tempo
+      endpoint: minio:9000
+      access_key: minioadmin
+      secret_key: minioadmin
+      insecure: true
+    wal:
+      path: /tempo-data/wal             # where to store the the wal locally
+    local:
+      path: /tempo-data/blocks
+
+distributor:
+  receivers:                           # this configuration will listen on all ports and protocols that tempo is capable of.
+    jaeger:                            # the receives all come from the OpenTelemetry collector.  more configuration information can
+      protocols:                       # be found there: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver
+        thrift_http:                   #
+        grpc:                          # for a production deployment you should only enable the receivers you need!
+        thrift_binary:
+        thrift_compact:
+    zipkin:
+    otlp:
+      protocols:
+        http:
+        grpc:
+    opencensus:
+
+  ring: &x-ring-config
+    kvstore: &x-kvstore-config
+      store: inmemory
+
+metrics_generator:
+  ring: 
+    kvstore: *x-kvstore-config
+  registry:
+    external_labels:
+      source: tempo
+      cluster: docker-compose
+  storage:
+    path: /tempo-data/generator/wal
+    # remote_write:
+    #   - url: http://prometheus:9090/api/v1/write
+    #     send_exemplars: true
+
+ingester:
+  # Lifecycler is responsible for managing the lifecycle of entries in the ring.
+  # For a complete list of config options check the lifecycler section under the ingester config at the following link -
+  # https://cortexmetrics.io/docs/configuration/configuration-file/#ingester_config
+  lifecycler:
+    ring:
+      # number of replicas of each span to make while pushing to the backend
+      replication_factor: 1
+      kvstore: *x-kvstore-config
+
+compactor:
+  ring: 
+    kvstore: *x-kvstore-config
+
+querier:
+  frontend_worker:
+    frontend_address: tempo:9095
+
+query_frontend:
+  search:
+    duration_slo: 5s
+    throughput_bytes_slo: 1.073741824e+09
+  trace_by_id:
+    duration_slo: 5s
+
+overrides:
+  defaults:
+    metrics_generator:
+      processors: ['service-graphs', 'span-metrics']
+
+usage_report:
+  reporting_enabled: false
