@@ -15,7 +15,7 @@ storage:
       secret_key: minioadmin
       insecure: true
     wal:
-      path: /tempo-data/wal             # where to store the the wal locally
+      path: /tempo-data/wal
     local:
       path: /tempo-data/blocks
 
