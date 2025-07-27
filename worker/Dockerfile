@@ -28,5 +28,6 @@ ENTRYPOINT [\
         "-Dotel.logs.exporter=otlp",\
         "-Dotel.metrics.exporter=otlp",\
         "-Dotel.traces.exporter=otlp",\
+        "-Dotel.instrumentation.spring-boot.enabled=true",\
         "-jar",\
         "/app/app.jar"]

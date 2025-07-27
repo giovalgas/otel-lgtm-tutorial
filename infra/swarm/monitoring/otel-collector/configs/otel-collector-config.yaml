@@ -19,7 +19,9 @@ exporters:
     tls:
       insecure: true
   otlphttp/mimir:
-    endpoint: http://mimir:8080/otlp
+    endpoint: http://mimir:3100/otlp
+    tls:
+      insecure: true
   debug:
 
 service:
