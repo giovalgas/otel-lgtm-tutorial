@@ -15,7 +15,7 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/api.jar /app/app.jar
-ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/2.18.1/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/tag/2.18.1/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 
 EXPOSE 8080
 
