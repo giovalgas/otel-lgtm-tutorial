@@ -15,7 +15,17 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/worker.jar /app/app.jar
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/2.18.1/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT [\
+        "java",\
+        "-javaagent:/app/opentelemetry-javaagent.jar",\
+        "-Dotel.service.name=worker",\
+        "-Dotel.exporter.otlp.endpoint=http://otel-collector:4317",\
+        "-Dotel.logs.exporter=otlp",\
+        "-Dotel.metrics.exporter=none",\
+        "-Dotel.traces.exporter=none",\
+        "-jar",\
+        "/app/app.jar"]
