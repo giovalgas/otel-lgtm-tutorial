@@ -33,7 +33,7 @@ volumes:
   tempo:
 
 configs:
-  tempo.yml:
+  tempo.yaml:
     external: true
 
 services:
@@ -52,7 +52,7 @@ services:
       - "4318:4318" # otlp http
       - "9411:9411" # zipkin
     configs:
-      - source: tempo.yml
+      - source: tempo.yaml
         target: /etc/tempo.yml
     volumes:
       - tempo:/tempo-data
