@@ -45,9 +45,6 @@ services:
       - -config.file=/etc/mimir/mimir.yaml
     networks:
       - dockerswarm_monitoring
-    ports:
-      - "3100:3100"
-      - "9095:9095"
     volumes:
       - mimir:/mimir
     configs:
