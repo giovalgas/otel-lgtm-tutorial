@@ -13,10 +13,13 @@ networks:
   dockerswarm_monitoring:
     name: dockerswarm_monitoring
     external: true
+  postgres:
 
 services:
   postgresql:
     image: postgres:17-alpine
+    networks:
+      - postgres
     environment:
       <<: *common-envs
 
@@ -24,6 +27,7 @@ services:
     image: "ghcr.io/giovalgas/otel-lgtm-tutorial-api:latest"
     networks:
       - dockerswarm_monitoring
+      - postgres
     ports:
       - "8080:8080"
     depends_on:
@@ -34,6 +38,7 @@ services:
   worker:
     image: "ghcr.io/giovalgas/otel-lgtm-tutorial-worker:latest"
     networks:
+      - postgres
       - dockerswarm_monitoring
     depends_on:
       - postgres
