@@ -14,11 +14,11 @@ processors:
 exporters:
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
-  tempo:
+  otlp/tempo:
     endpoint: tempo:4317
     tls:
       insecure: true
-  mimir:
+  otlphttp/mimir:
     endpoint: http://mimir:8080/otlp
   debug:
 
@@ -27,11 +27,11 @@ service:
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [mimir]
+      exporters: [otlphttp/mimir]
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [tempo]
+      exporters: [otlp/tempo]
     logs:
       receivers: [otlp]
       processors: [batch]

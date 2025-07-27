@@ -1,6 +1,6 @@
 target: all,ruler,overrides-exporter
 
-auth_enabled: false
+multitenancy_enabled: false
 
 server:
   http_listen_port: 3100
@@ -31,7 +31,7 @@ ruler_storage:
 
 compactor:
   sharding_ring:
-    instance_addr: &instance_addr mimir-{{.Task.Slot}}
+    instance_addr: &instance_addr mimir
     kvstore: &default-ring-kvstore
       store: inmemory
 
@@ -51,7 +51,7 @@ ingester:
   ring:
     instance_addr: *instance_addr
     kvstore: *default-ring-kvstore
-    replication_factor: 3
+    replication_factor: 1
 
 query_scheduler:
   ring:
@@ -69,7 +69,7 @@ store_gateway:
   sharding_ring:
     instance_addr: *instance_addr
     kvstore: *default-ring-kvstore
-    replication_factor: 3
+    replication_factor: 1
 
 overrides_exporter:
   ring:
