@@ -23,7 +23,7 @@ ENTRYPOINT [\
         "java",\
         "-javaagent:/app/opentelemetry-javaagent.jar",\
         "-Dotel.service.name=api",\
-        "-Dotel.exporter.otlp.endpoint=http://otel-collector:4317",\
+        "-Dotel.exporter.otlp.endpoint=grpc://otel-collector:4317",\
         "-Dotel.logs.exporter=otlp",\
         "-Dotel.metrics.exporter=none",\
         "-Dotel.traces.exporter=none",\
