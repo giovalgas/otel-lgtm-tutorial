@@ -1,0 +1,59 @@
+x-deploy: &x-deploy-default
+  replicas: 1
+  placement:
+    max_replicas_per_node: 1
+    preferences:
+      - spread: node.labels.grafana-mimir
+  update_config:
+    parallelism: 1
+    delay: 30s
+    order: stop-first
+    failure_action: rollback
+  rollback_config:
+    parallelism: 1
+    delay: 30s
+  restart_policy:
+    condition: on-failure
+    delay: 30s
+    max_attempts: 3
+    window: 120s
+
+x-logging: &x-logging-default
+  options:
+    max-size: "12m"
+    max-file: "5"
+  driver: json-file
+
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
+volumes:
+  mimir:
+
+configs:
+  mimir.yaml:
+    external: true
+
+services:
+  mimir:
+    image: grafana/mimir:latest
+    hostname: mimir-{{.Task.Slot}}
+    command: 
+      - -config.expand-env=true
+      - -config.file=/etc/mimir/mimir.yaml
+    networks:
+      - dockerswarm_monitoring
+    ports:
+      - "3100:3100"
+      - "9095:9095"
+    volumes:
+      - mimir:/mimir
+    configs:
+      - source: mimir.yaml
+        target: /etc/mimir/mimir.yaml
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    deploy: *x-deploy-default
+    logging: *x-logging-default
