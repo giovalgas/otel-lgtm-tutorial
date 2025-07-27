@@ -27,11 +27,11 @@ exporters:
 service:
   pipelines:
     metrics:
-      receivers: [otlp, http]
+      receivers: [otlp]
       processors: [batch]
       exporters: [otlphttp/mimir]
     traces:
-      receivers: [otlp, http]
+      receivers: [otlp]
       processors: [batch]
       exporters: [otlp/tempo]
     logs:
