@@ -45,9 +45,6 @@ services:
       - -config.file=/etc/loki/loki.yml
     networks:
       - dockerswarm_monitoring
-    ports:
-      - "3100:3100"
-      - "9195:9095"
     volumes:
       - loki:/loki
     configs:

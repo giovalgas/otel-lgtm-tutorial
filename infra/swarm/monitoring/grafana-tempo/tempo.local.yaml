@@ -44,13 +44,6 @@ services:
       - -config.file=/etc/tempo.yml
     networks:
       - dockerswarm_monitoring
-    ports:
-      - "3300:3100" # tempo http_listen_port
-      - "9395:9095" # tempo grpc_listen_port
-      - "14268:14268" # jaeger ingest
-      - "4317:4317" # otlp grpc
-      - "4318:4318" # otlp http
-      - "9411:9411" # zipkin
     configs:
       - source: tempo.yaml
         target: /etc/tempo.yml
