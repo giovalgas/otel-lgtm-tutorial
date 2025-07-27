@@ -9,6 +9,11 @@ x-common-envs: &common-envs
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
 
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
 services:
   postgresql:
     image: postgres:17-alpine
@@ -17,6 +22,8 @@ services:
 
   api:
     image: "ghcr.io/giovalgas/otel-lgtm-tutorial-api:latest"
+    networks:
+      - dockerswarm_monitoring
     ports:
       - "8080:8080"
     depends_on:
@@ -26,6 +33,8 @@ services:
 
   worker:
     image: "ghcr.io/giovalgas/otel-lgtm-tutorial-worker:latest"
+    networks:
+      - dockerswarm_monitoring
     depends_on:
       - postgres
     environment:

@@ -1,3 +1,11 @@
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
+volumes:
+  minio-data:
+
 services:
   minio:
     image: quay.io/minio/minio
@@ -15,8 +23,6 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - dockerswarm_monitoring
     user: "${UID}:${GID}"
-
-volumes:
-  minio-data:
-
