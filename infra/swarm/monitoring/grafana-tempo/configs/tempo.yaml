@@ -38,11 +38,16 @@ metrics_generator:
     external_labels:
       source: tempo
       cluster: docker-compose
+  traces_storage:
+    path: /tempo-data/generator/traces
   storage:
     path: /tempo-data/generator/wal
-    # remote_write:
-    #   - url: http://prometheus:9090/api/v1/write
-    #     send_exemplars: true
+    remote_write:
+      - url: http://mimir:3100/api/v1/push
+        send_exemplars: true
+  processor:
+    local_blocks:
+      flush_to_storage: true
 
 ingester:
   # Lifecycler is responsible for managing the lifecycle of entries in the ring.
